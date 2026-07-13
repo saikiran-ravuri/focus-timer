@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Focus Timer</title>
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+</head>
+
+<body>
+
+    <main class="app">
+
+        <!-- ===========================
+             Application Header
+        ============================ -->
+
+        <header class="app-header">
+
+            <span class="app-badge">
+                PRODUCTIVITY
+            </span>
+
+            <h1 class="app-title">
+                Focus Timer
+            </h1>
+
+            <p class="app-description">
+                Boost your productivity through focused work sessions.
+            </p>
+
+        </header>
+
+        <!-- ===========================
+             Focus Timer Dashboard
+        ============================ -->
+
+        <section class="timer-dashboard">
+
+            <!-- ===========================
+                 Timer Card
+            ============================ -->
+
+            <section class="timer-card">
+
+                <h2 class="visually-hidden">
+                    Focus Timer
+                </h2>
+
+                <!-- Duration -->
+
+                <div class="duration-section">
+
+                    <label
+                        class="duration-label"
+                        for="durationInput"
+                    >
+                        Focus Duration
+                    </label>
+
+                    <div class="duration-input-group">
+
+                        <input
+                            id="durationInput"
+                            type="number"
+                            min="1"
+                            max="120"
+                            value="25"
+                        >
+
+                        <span>
+                            Minutes
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- Circular Progress -->
+
+                <div class="timer-container">
+
+                    <svg
+                        class="progress-ring"
+                        width="260"
+                        height="260"
+                    >
+
+                        <circle
+                            class="progress-ring-track"
+                            cx="130"
+                            cy="130"
+                            r="110"
+                        />
+
+                        <circle
+                            class="progress-ring-fill"
+                            id="progressRing"
+                            cx="130"
+                            cy="130"
+                            r="110"
+                        />
+
+                    </svg>
+
+                    <div class="timer-content">
+
+                        <p
+                            class="timer-display"
+                            id="timerDisplay"
+                        >
+                            25:00
+                        </p>
+
+                        <p class="timer-label">
+                            Remaining
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- Controls -->
+
+                <div class="controls">
+
+                    <button
+                        id="startButton"
+                        class="button button-primary"
+                        type="button"
+                    >
+
+                        <i data-lucide="play"></i>
+
+                        <span>
+                            Start
+                        </span>
+
+                    </button>
+
+                    <button
+                        id="pauseButton"
+                        class="button button-secondary"
+                        type="button"
+                        disabled
+                    >
+
+                        <i data-lucide="pause"></i>
+
+                        <span>
+                            Pause
+                        </span>
+
+                    </button>
+
+                    <button
+                        id="resetButton"
+                        class="button button-secondary"
+                        type="button"
+                        disabled
+                    >
+
+                        <i data-lucide="rotate-ccw"></i>
+
+                        <span>
+                            Reset
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+            <!-- ===========================
+                 Information Panel
+            ============================ -->
+
+            <aside class="information-panel">
+
+                <article class="info-card">
+
+                    <h3>
+                        Current Session
+                    </h3>
+
+                    <p id="sessionName">
+                        Focus Session
+                    </p>
+
+                </article>
+
+                <article class="info-card">
+
+                    <h3>
+                        Timer Status
+                    </h3>
+
+                    <p id="status">
+                        Ready
+                    </p>
+
+                </article>
+
+                <article class="info-card">
+
+                    <h3>
+                        Remaining Time
+                    </h3>
+
+                    <p id="remainingTime">
+                        25 Minutes
+                    </p>
+
+                </article>
+
+            </aside>
+
+        </section>
+
+    </main>
+
+    <!-- Lucide Icons -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        lucide.createIcons();
+    </script>
+
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>
