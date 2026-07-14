@@ -1,0 +1,117 @@
+/* table layout */
+
+@media (max-width: 900px) {
+    .app {
+        padding: 48px 0;
+    }
+
+    .app-title {
+        font-size: 2.75rem;
+    }
+
+    .timer-dashboard {
+        padding: 40px 32px;
+    }
+
+    .information-panel {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .info-card:last-child {
+        grid-column: 1 / -1;
+    }
+}
+
+/* mobile layout */
+@media (max-width: 600px) {
+    .app {
+        width: min(100% - 24px, 960px);
+        padding: 32px 0;
+    }
+
+    .app-header {
+        margin-bottom: 28px;
+    }
+
+    .app-title {
+        font-size: 2.2rem;
+    }
+
+    .app-description {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .timer-dashboard {
+        padding: 28px 18px;
+        border-radius: 22px;
+    }
+
+    .duration-section {
+        margin-bottom: 32px;
+    }
+
+    .timer-container {
+        width: 240px;
+        height: 240px;
+        margin-bottom: 32px;
+    }
+
+    .timer-display {
+        font-size: 3.25rem;
+    }
+
+    .controls {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-bottom: 32px;
+    }
+
+    .information-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .info-card:last-child {
+        grid-column: auto;
+    }
+}
+
+/* Responsive for small screens */
+
+@media (max-width: 380px) {
+    .app {
+        width: min(100% - 16px, 960px);
+        padding: 24px 0;
+    }
+
+    .app-badge {
+        padding: 7px 12px;
+        font-size: 0.68rem;
+    }
+
+    .app-title {
+        font-size: 1.9rem;
+    }
+
+    .timer-dashboard {
+        padding: 24px 14px;
+    }
+
+    .duration-input-group {
+        padding: 12px 14px;
+    }
+
+    .timer-container {
+        width: 210px;
+        height: 210px;
+    }
+
+    .timer-display {
+        font-size: 2.8rem;
+    }
+
+    .info-card {
+        min-height: 135px;
+        padding: 18px;
+    }
+}

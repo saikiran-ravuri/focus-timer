@@ -98,45 +98,9 @@ body {
 /* styling timer card */
 
 .timer-card{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-}
-
-/* timer dashboard */
-
-.timer-dashboard {
-    width: 100%;
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 48px;
-    background: var(--surface);
-    border: 1px solid rgba(255, 255, 255, .65);
-    border-radius: var(--radius-large);
-    backdrop-filter: blur(22px);
-    box-shadow: var(--shadow-large);
-}
-
-/* timer dashboard */
-
-.timer-dashboard {
-    width: 100%;
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 48px;
-    background: var(--surface);
-    border: 1px solid rgba(255, 255, 255, .65);
-    border-radius: var(--radius-large);
-    backdrop-filter: blur(22px);
-    box-shadow: var(--shadow-large);
-}
-
-/* timer card */
-
-.timer-card{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* duration section */
@@ -188,6 +152,15 @@ body {
     color: var(--muted);
     font-size: 0.9rem;
     font-weight: 500;
+}
+
+.duration-help {
+    margin-top: 10px;
+
+    color: var(--muted);
+
+    font-size: 0.82rem;
+    line-height: 1.5;
 }
 
 /* circular timer */
@@ -320,16 +293,57 @@ body {
 }
 
 .info-card {
+    min-height: 150px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
     padding: 20px;
+
     background: #ffffff;
+
     border: 1px solid var(--border);
     border-radius: var(--radius-medium);
+
     box-shadow: var(--shadow-small);
+
+    transition: var(--transition);
+}
+
+.info-card:hover {
+    border-color: rgba(37, 99, 235, 0.25);
+
+    transform: translateY(-4px);
+
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.1);
+}
+
+.info-icon {
+    width: 42px;
+    height: 42px;
+
+    margin-bottom: 18px;
+
+    display: grid;
+    place-items: center;
+
+    color: var(--primary);
+    background: rgba(37, 99, 235, 0.08);
+
+    border-radius: 12px;
+}
+
+.info-icon svg {
+    width: 20px;
+    height: 20px;
 }
 
 .info-card h3 {
     margin-bottom: 8px;
+
     color: var(--muted);
+
     font-size: 0.8rem;
     font-weight: 600;
     letter-spacing: 0.5px;
@@ -338,6 +352,8 @@ body {
 
 .info-card p {
     color: var(--heading);
+
     font-size: 1rem;
     font-weight: 600;
+    line-height: 1.4;
 }
