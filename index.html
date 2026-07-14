@@ -32,14 +32,11 @@
 
         <!-- focus timer dashboard -->
 
-        <section class="timer-dashboard">
+        <div class="timer-dashboard">
 
             <!-- timer card -->
 
-            <section class="timer-card">
-                <h2 class="visually-hidden">
-                    Focus Timer
-                </h2>
+            <div class="timer-card">
 
                 <!-- duration -->
 
@@ -58,11 +55,15 @@
                             min="1"
                             max="120"
                             value="25"
+                            aria-describedby="durationHelp"
                         >
                         <span>
                             Minutes
                         </span>
                     </div>
+                    <p class="duration-help" id="durationHelp">
+                        Choose a duration between 1 and 120 minutes.
+                    </p>
                 </div>
 
                 <!-- circular progress -->
@@ -72,6 +73,11 @@
                         class="progress-ring"
                         width="260"
                         height="260"
+                        role="progressbar"
+                        aria-label="Focus session progress"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        aria-valuenow="0"
                     >
                         <circle
                             class="progress-ring-track"
@@ -139,12 +145,15 @@
                         </span>
                     </button>
                 </div>
-            </section>
+            </div>
 
             <!-- information panel -->
 
             <aside class="information-panel">
                 <article class="info-card">
+                    <div class="info-icon">
+                        <i data-lucide="target"></i>
+                    </div>
                     <h3>
                         Current Session
                     </h3>
@@ -153,14 +162,20 @@
                     </p>
                 </article>
                 <article class="info-card">
+                    <div class="info-icon">
+                        <i data-lucide="activity"></i>
+                    </div>
                     <h3>
                         Timer Status
                     </h3>
-                    <p id="status">
+                    <p id="status" aria-live="polite">
                         Ready
                     </p>
                 </article>
                 <article class="info-card">
+                    <div class="info-icon">
+                        <i data-lucide="clock-3"></i>
+                    </div>
                     <h3>
                         Remaining Time
                     </h3>
@@ -170,7 +185,7 @@
                 </article>
             </aside>
 
-        </section>
+        </div>
     </main>
 
     <!-- lucide Icons -->
