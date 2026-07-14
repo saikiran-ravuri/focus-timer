@@ -1,6 +1,6 @@
 "use strict";
 
-// dom references 
+// dom references
 
 const durationInput = document.getElementById("durationInput");
 const timerDisplay = document.getElementById("timerDisplay");
@@ -14,6 +14,12 @@ const remainingTime = document.getElementById("remainingTime");
 const sessionName = document.getElementById("sessionName");
 const progressRing = document.getElementById("progressRing");
 
+// audio
+
+const completionSound = new Audio("./assets/completion.mp3");
+
+completionSound.preload = "auto";
+
 // application state
 
 const timerState = {
@@ -23,123 +29,219 @@ const timerState = {
     isRunning: false
 };
 
-// timer function
+// progress ring
 
-function formatTime(totalSeconds){
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
+const ringRadius = 110;
+const ringCircumference = 2 * Math.PI * ringRadius;
 
-    const formattedMinutes = String(minutes).padStart(2,"0");
-    const formattedSeconds = String(seconds).padStart(2,"0");
+progressRing.style.strokeDasharray = String(ringCircumference);
+progressRing.style.strokeDashoffset = "0";
+
+// untility functions
+
+function formatTime(totalSeconds) {
+    const safeSeconds = Math.max(0, totalSeconds);
+
+    const minutes = Math.floor(safeSeconds / 60);
+    const seconds = safeSeconds % 60;
+
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(seconds).padStart(2, "0");
 
     return `${formattedMinutes}:${formattedSeconds}`;
 }
 
-//timer function
+
+function playCompletionSound() {
+    completionSound.currentTime = 0;
+
+    completionSound.play().catch((error) => {
+        console.error("Unable to play completion sound:", error);
+    });
+}
+
+// ui functions
+
+function updateTimerDisplay() {
+    timerDisplay.textContent = formatTime(
+        timerState.remainingSeconds
+    );
+
+    const remainingMinutes = Math.ceil(
+        timerState.remainingSeconds / 60
+    );
+
+    remainingTime.textContent =
+        `${remainingMinutes} ${
+            remainingMinutes === 1 ? "Minute" : "Minutes"
+        }`;
+
+    const progress =
+        timerState.duration > 0
+            ? timerState.remainingSeconds / timerState.duration
+            : 0;
+
+    const safeProgress = Math.max(0, Math.min(1, progress));
+
+    progressRing.style.strokeDashoffset = String(
+        ringCircumference * (1 - safeProgress)
+    );
+
+    progressRing.setAttribute(
+        "aria-valuenow",
+        String(Math.round(safeProgress * 100))
+    );
+}
+
+
+function updateControls(state) {
+    const isRunning = state === "running";
+    const isReady = state === "ready";
+
+    startButton.disabled = isRunning;
+    pauseButton.disabled = !isRunning;
+    resetButton.disabled = isReady;
+    durationInput.disabled = isRunning;
+}
+
+
+function updateStatus(status) {
+    statusText.textContent = status;
+
+    if (status === "Completed") {
+        sessionName.textContent = "Session Complete";
+        return;
+    }
+
+    sessionName.textContent = "Focus Session";
+}
+
+// timer functions
+
+function stopInterval() {
+    clearInterval(timerState.timerId);
+
+    timerState.timerId = null;
+    timerState.isRunning = false;
+}
+
+
+function completeTimer() {
+    stopInterval();
+
+    timerState.remainingSeconds = 0;
+
+    updateTimerDisplay();
+    updateStatus("Completed");
+    updateControls("completed");
+
+    playCompletionSound();
+}
+
 
 function startTimer() {
     if (timerState.isRunning) {
         return;
     }
 
+    if (timerState.remainingSeconds <= 0) {
+        timerState.remainingSeconds = timerState.duration;
+        updateTimerDisplay();
+    }
+
     timerState.isRunning = true;
 
-    statusText.textContent = "Running";
-
-    startButton.disabled = true;
-    pauseButton.disabled = false;
-    resetButton.disabled = false;
+    updateStatus("Running");
+    updateControls("running");
 
     timerState.timerId = setInterval(() => {
-        timerState.remainingSeconds--;
+        timerState.remainingSeconds -= 1;
+
         updateTimerDisplay();
 
         if (timerState.remainingSeconds <= 0) {
-            clearInterval(timerState.timerId);
-
-            timerState.timerId = null;
-            timerState.isRunning = false;
-
-            statusText.textContent = "Completed";
-
-            startButton.disabled = false;
-            pauseButton.disabled = true;
-            resetButton.disabled = false;
+            completeTimer();
         }
     }, 1000);
 }
 
-// pause function
 
 function pauseTimer() {
-    clearInterval(timerState.timerId);
+    if (!timerState.isRunning) {
+        return;
+    }
 
-    timerState.timerId = null;
-    timerState.isRunning = false;
+    stopInterval();
 
-    statusText.textContent = "Paused";
-
-    startButton.disabled = false;
-    pauseButton.disabled = true;
-    resetButton.disabled = false;
+    updateStatus("Paused");
+    updateControls("paused");
 }
 
-// reset function
 
 function resetTimer() {
-    clearInterval(timerState.timerId);
-
-    timerState.timerId = null;
-    timerState.isRunning = false;
-
-    statusText.textContent = "Ready";
+    stopInterval();
 
     timerState.remainingSeconds = timerState.duration;
 
     updateTimerDisplay();
-
-    startButton.disabled = false;
-    pauseButton.disabled = true;
-    resetButton.disabled = true;
+    updateStatus("Ready");
+    updateControls("ready");
 }
 
-// update duration
+// duration funtion
 
 function updateDuration() {
-    const minutes = Number(durationInput.value);
+    const inputValue = durationInput.value.trim();
+
+    if (inputValue === "") {
+        return;
+    }
+
+    const minutes = Number(inputValue);
+
+    if (
+        !Number.isFinite(minutes) ||
+        minutes < 1 ||
+        minutes > 120
+    ) {
+        return;
+    }
+
+    stopInterval();
 
     timerState.duration = minutes * 60;
     timerState.remainingSeconds = timerState.duration;
 
     updateTimerDisplay();
+    updateStatus("Ready");
+    updateControls("ready");
 }
 
-// update display timer
 
-function updateTimerDisplay(){
-    timerDisplay.textContent = formatTime(timerState.remainingSeconds);
+function restoreDurationInput() {
+    const minutes = Number(durationInput.value);
 
-    remainingTime.textContent =
-    `${Math.ceil(timerState.remainingSeconds / 60)} Minutes`;
-
-    const progress =
-    timerState.remainingSeconds / timerState.duration;
-
-    progressRing.style.strokeDashoffset =
-        ringCircumference * (1 - progress);
+    if (
+        durationInput.value.trim() === "" ||
+        !Number.isFinite(minutes) ||
+        minutes < 1 ||
+        minutes > 120
+    ) {
+        durationInput.value = timerState.duration / 60;
+    }
 }
-updateTimerDisplay();
 
 // event listeners
 
 startButton.addEventListener("click", startTimer);
 pauseButton.addEventListener("click", pauseTimer);
+resetButton.addEventListener("click", resetTimer);
+
 durationInput.addEventListener("input", updateDuration);
+durationInput.addEventListener("blur", restoreDurationInput);
 
-// circular progress ring
+// initialise 
 
-const ringRadius = 110;
-const ringCircumference = 2 * Math.PI * ringRadius;
-
-progressRing.style.strokeDasharray = ringCircumference;
-progressRing.style.strokeDashoffset = 0;
+updateTimerDisplay();
+updateStatus("Ready");
+updateControls("ready");
