@@ -37,7 +37,7 @@ const ringCircumference = 2 * Math.PI * ringRadius;
 progressRing.style.strokeDasharray = String(ringCircumference);
 progressRing.style.strokeDashoffset = "0";
 
-// untility functions
+// utility functions
 
 function formatTime(totalSeconds) {
     const safeSeconds = Math.max(0, totalSeconds);
@@ -188,7 +188,7 @@ function resetTimer() {
     updateControls("ready");
 }
 
-// duration funtion
+// duration funtions
 
 function updateDuration() {
     const inputValue = durationInput.value.trim();
@@ -240,7 +240,7 @@ resetButton.addEventListener("click", resetTimer);
 durationInput.addEventListener("input", updateDuration);
 durationInput.addEventListener("blur", restoreDurationInput);
 
-// initialise 
+// initialize application
 
 updateTimerDisplay();
 updateStatus("Ready");
